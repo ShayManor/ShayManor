@@ -1,7 +1,14 @@
-## Hi there 👋
+### Hi there 👋
+
+<table>
+<tr>
+<td><img src="https://github-readme-stats.vercel.app/api?username=shaymanor&show_icons=true&count_private=true"></td>
+<td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=shaymanor&hide=Jupyter+Notebook,C,html,css"></td>
+</tr>
+</table>
 
 <!--
-**ShayManor/ShayManor** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+**shaymanor/shaymanor** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
 Here are some ideas to get you started:
 
