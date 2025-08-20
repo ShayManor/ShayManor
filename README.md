@@ -2,7 +2,7 @@
 
 <table>
 <tr>
-<td><img src="https://github-readme-stats.vercel.app/api?username=shaymanor&show_icons=true&count_private=true&theme=radical"></td>
+<!-- <td><img src="https://github-readme-stats.vercel.app/api?username=shaymanor&show_icons=true&count_private=true&theme=radical"></td> -->
 <td><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=shaymanor&hide=html,css,shell,mdx"></td>
   <a href="https://pepy.tech/projects/pykalmanfilter"><img src="https://static.pepy.tech/badge/pykalmanfilter" alt="PyPI Downloads"></a>
 </tr>
