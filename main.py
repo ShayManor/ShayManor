@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, send_from_directory
 
-app = Flask(__name__, static_folder="static", static_url_path="")
+app = Flask(__name__, static_folder="src", static_url_path="")
 
 
 @app.route("/", methods=["GET"])
