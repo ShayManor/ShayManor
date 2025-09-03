@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shay Manor - AI/ML Engineer</title>
+    <title>Shay Manor — AI/ML Engineer at Purdue | Official Site</title>
+    <meta name="description"
+          content="Shay Manor is an AI/ML engineer and Purdue University CS student. Projects: GPU Finder, ShayGPT, Kalman toolkit, quantum NLP. Contact Shay Manor via LinkedIn or email.">
+    <link rel="canonical" href="https://shaymanor.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Shay Manor">
+    <meta property="og:title" content="Shay Manor — AI/ML Engineer at Purdue | Official Site">
+    <meta property="og:description"
+          content="Official website of Shay Manor. AI/ML engineer, projects, publications, and contact.">
+    <meta property="og:url" content="https://shaymanor.com/">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -846,6 +856,13 @@
     </style>
 </head>
 <body>
+<ul class="nav-links">
+  <li><a href="#home"    onclick="showPage('home')">Home</a></li>
+  <li><a href="#projects"onclick="showPage('projects')">Projects</a></li>
+  <li><a href="#github"  onclick="showPage('github')">GitHub</a></li>
+  <li><a href="#about"   onclick="showPage('about')">About</a></li>
+  <li><a href="#resume"  onclick="showPage('resume')">Resume</a></li>
+</ul>
 <nav class="navbar">
     <div class="nav-container">
         <div class="logo">Shay Manor</div>
@@ -878,7 +895,9 @@
                     <i class="fas fa-code"></i>
                     Currently building at Purdue
                 </div>
-
+                <h1 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+                    Shay Manor — AI/ML Engineer
+                </h1>
                 <h1 class="hero-title">
                     Building cool things <span class="gradient-text">at scale</span>
                 </h1>
@@ -1703,28 +1722,50 @@
         });
     });
 </script>
+<script type="application/ld+json">
+    {
+        "@context" : "https://schema.org" ,
+        "@type" : "Person" ,
+        "name" : "Shay Manor" ,
+        "url" : "https://shaymanor.com/" ,
+        "jobTitle" : "AI/ML Engineer" ,
+        "affiliation" : {
+            "@type" : "CollegeOrUniversity" ,
+            "name" : "Purdue University"
+        } ,
+        "sameAs" : [
+            "https://www.linkedin.com/in/shay-manor/" ,
+            "https://github.com/ShayManor" ,
+            "https://shaymanor.com/" ,
+            "mailto:shay.manor@gmail.com"
+        ]
+    }
+</script>
+<noscript>
+  <style>.page{display:block !important;}</style>
+</noscript>
 <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBu9mYfCPtOhpCLI-tFHfYnN-4tReHHmBQ",
-    authDomain: "shay-site.firebaseapp.com",
-    projectId: "shay-site",
-    storageBucket: "shay-site.firebasestorage.app",
-    messagingSenderId: "896608115103",
-    appId: "1:896608115103:web:547b7b5903f0cd55b6c5aa",
-    measurementId: "G-HLS43ZD1GT"
-  };
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBu9mYfCPtOhpCLI-tFHfYnN-4tReHHmBQ",
+      authDomain: "shay-site.firebaseapp.com",
+      projectId: "shay-site",
+      storageBucket: "shay-site.firebasestorage.app",
+      messagingSenderId: "896608115103",
+      appId: "1:896608115103:web:547b7b5903f0cd55b6c5aa",
+      measurementId: "G-HLS43ZD1GT"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
 </script>
 </body>
 </html>
