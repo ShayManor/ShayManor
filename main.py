@@ -91,15 +91,14 @@ def create_blog():
     time.sleep(2)
     tldr = ping_gpt(system=get_tldr_system(), prompt=body, effort="medium")
 
-
-    data_to_insert = {"id": str(uuid.uuid4()), "title": title, "body": body, "tldr": tldr}
+    id = str(uuid.uuid4())
+    data_to_insert = {"id": id, "title": title, "body": body, "tldr": tldr}
     response = (
         supabase.table("site_blog")
         .insert(data_to_insert)
         .execute()
     )
-    print(response)
-    return jsonify({"status": response.data["id"]})
+    return jsonify({"status":id})
 
 
 if __name__ == "__main__":
