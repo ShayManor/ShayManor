@@ -105,52 +105,58 @@ def create_blog():
 
 @app.route('/add_email', methods=['POST'])
 def add_email():
-    data = request.get_json()
-    email = data.get('email')
-    frequency = data.get('frequency', 'daily')
-    if not email:
-        raise ValueError('Email not found!')
-    SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY')
-    SUPABASE_URL = os.getenv('SUPABASE_URL')
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        frequency = data.get('frequency', 'daily')
+        if not email:
+            raise ValueError('Email not found!')
+        SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY')
+        SUPABASE_URL = os.getenv('SUPABASE_URL')
 
-    if not SUPABASE_SERVICE_KEY:
-        return jsonify({"error": "No SUPABASE_SERVICE_KEY"})
+        if not SUPABASE_SERVICE_KEY:
+            return jsonify({"error": "No SUPABASE_SERVICE_KEY"})
 
-    if not SUPABASE_URL:
-        return jsonify({"error": "No SUPABASE_URL"})
+        if not SUPABASE_URL:
+            return jsonify({"error": "No SUPABASE_URL"})
 
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-    data_to_insert = {"email": email, "frequency": frequency}
-    response = (
-        supabase.table("site_users")
-        .insert(data_to_insert)
-        .execute()
-    )
-    return jsonify({"status": 200})
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        data_to_insert = {"email": email, "frequency": frequency}
+        response = (
+            supabase.table("site_users")
+            .insert(data_to_insert)
+            .execute()
+        )
+        return jsonify({"status": 200})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 @app.route('/remove_email', methods=['POST'])
 def remove_email():
-    data = request.get_json()
-    email = data.get('email')
-    if not email:
-        raise ValueError('Email not found!')
-    SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY')
-    SUPABASE_URL = os.getenv('SUPABASE_URL')
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        if not email:
+            raise ValueError('Email not found!')
+        SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY')
+        SUPABASE_URL = os.getenv('SUPABASE_URL')
 
-    if not SUPABASE_SERVICE_KEY:
-        return jsonify({"error": "No SUPABASE_SERVICE_KEY"})
+        if not SUPABASE_SERVICE_KEY:
+            return jsonify({"error": "No SUPABASE_SERVICE_KEY"})
 
-    if not SUPABASE_URL:
-        return jsonify({"error": "No SUPABASE_URL"})
+        if not SUPABASE_URL:
+            return jsonify({"error": "No SUPABASE_URL"})
 
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-    data_to_remove = {"email": email}
-    response = (
-        supabase.table("site_users")
-        .delete(data_to_remove)
-        .execute()
-    )
-    return jsonify({"status": 200})
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        data_to_remove = {"email": email}
+        response = (
+            supabase.table("site_users")
+            .delete(data_to_remove)
+            .execute()
+        )
+        return jsonify({"status": 200})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 if __name__ == "__main__":
