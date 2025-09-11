@@ -203,22 +203,22 @@ def execute(recipient: str, subject: str, content: str):
     """
     print("Email:", recipient, subject)
 
-    path = Path(__file__).resolve().parent.parent
+    path = Path("/secrets")
     SCOPES = ["https://mail.google.com/"]
     creds = None
-    if os.path.exists(path / "mail_token.json"):
+    if os.path.exists(path / "token/mail_token.json"):
         creds = Credentials.from_authorized_user_file(
-            (path / "mail_token.json").__str__(), SCOPES
+            (path / "token/mail_token.json").__str__(), SCOPES
         )
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                (path / "gcloud_cfg.json").__str__(), SCOPES
+                (path / "client/gcloud_cfg.json").__str__(), SCOPES
             )
             creds = flow.run_local_server(port=0)
-        with open("../mail_token.json", "w") as token:
+        with open("token/mail_token.json", "w") as token:
             token.write(creds.to_json())
 
     try:
