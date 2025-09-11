@@ -15,11 +15,11 @@ from supabase import create_client, Client
 app = Flask(__name__, static_folder="src", static_url_path="")
 CORS(app)
 
-def get_body_system(date): return f"You are an expert at providing a real, accurate summary of the major news from the last day. You have access to web searches and hackernews. Summarize the top hackernews articles and **IMPORTANT** provide a realistic analysis and synthesis of these. The current date is: {date}. Only return the overall summary as an article form and use critical thinking to analyze each. You will be given the top posts from hackernews and access to a web search tool and will use this to check the **MOST** interesting, relevant posts to talk about. Some interesting post example titles could be 'Using Claude Code to modernize a 25-year-old kernel driver', 'Myanmar – Silk Road of Surveillance', 'Stripe Launches L1 Blockchain: Tempo', 'LLM Visualization', or other interesting articles involving ML, math, cybersecurity, or crypto. Ignoring posts is fine. Focus on posts that talk about new technologies, AI/ML breakthroughts, or important relevant topics. Be concise, this should be a 2-5 minute read. Don't put a title, just the body in markdown. Only return the body, nothing else. Read the real articles, don't just use the titles. Go through the important links and summarize them."
+def get_body_system(date): return f"You are an expert at providing a real, accurate summary of the major news from the last day. You have access to web searches and hackernews. Summarize the top hackernews articles and **IMPORTANT** provide a realistic analysis and synthesis of these. Use understandable language and explain things well with relatively simple language. Don't use technical language if its not necessary. The current date is: {date}. Only return the overall summary as an article form and use critical thinking to analyze each. You will be given the top posts from hackernews and access to a web search tool and will use this to check the **MOST** interesting, relevant posts to talk about. Some interesting post example titles could be 'Using Claude Code to modernize a 25-year-old kernel driver', 'Myanmar – Silk Road of Surveillance', 'Stripe Launches L1 Blockchain: Tempo', 'LLM Visualization', or other interesting articles involving ML, math, cybersecurity, or crypto. Ignoring posts is fine. Focus on posts that talk about new technologies, AI/ML breakthroughts, or important relevant topics. Be concise, this should be a 2-5 minute read. Don't put a title, just the body in markdown. Only return the body, nothing else. Read the real articles, don't just use the titles. Go through the important links and summarize them."
 
 def get_title_system(): return "You are an expert at taking an article and giving it a short, clear title. No need for super dramatic titles. It should be 2-10 words and accurately encapsulate what happens and the overall theme. Only return the title."
 
-def get_tldr_system(): return "You are an expert at summarizing technical articles in a clear and understandable way. Without losing important information, write a 1 paragraph, short and clear tldr for this article. Be accurate. Only return the paragraph tldr summary."
+def get_tldr_system(): return "You are an expert at summarizing technical articles in a clear and understandable way. Without losing important information, write a 1 paragraph, short and clear tldr for this article. Be accurate. Only return the paragraph tldr summary. Don't start with TLDR or anything similar, just return the paragraph text."
 
 @dataclass
 class Article:
@@ -101,6 +101,26 @@ def create_blog():
         return jsonify({"status":id})
     except Exception as e:
         return jsonify({"error": str(e)})
+
+
+@app.route('/add_email', methods=['POST'])
+def add_email():
+    data = request.get_json()
+    email = data.get('email')
+    frequency = data.get('frequency', 'daily')
+    if not email:
+        raise ValueError('Email not found!')
+    SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY')
+    SUPABASE_URL = os.getenv('SUPABASE_URL')
+
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+    data_to_insert = {"email": email, "frequency": frequency}
+    response = (
+        supabase.table("site_users")
+        .insert(data_to_insert)
+        .execute()
+    )
+    return jsonify({"status": 200})
 
 
 if __name__ == "__main__":
