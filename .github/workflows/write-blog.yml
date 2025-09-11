@@ -31,7 +31,7 @@ jobs:
           )
 
           # Call endpoint
-          curl -fsS --retry 5 --retry-delay 10 --max-time 300 \
+          curl -fsS --max-time 300 \
             -H "Content-Type: application/json" \
             -X POST \
             -d "${payload}" \
