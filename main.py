@@ -3,6 +3,7 @@ import datetime
 import json
 import os
 import time
+import traceback
 import uuid
 from dataclasses import dataclass
 from datetime import date
@@ -266,7 +267,9 @@ def send_email():
             execute(recipient=email, subject="test email", content="Shalom")
         return jsonify({"success": True})
     except Exception as e:
-        return jsonify({"error": str(e)})
+        trace = traceback.format_exc()
+        print(trace, flush=True)
+        return jsonify({"error": str(e), "traceback": trace}), 500
 
 
 if __name__ == "__main__":
