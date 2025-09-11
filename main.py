@@ -259,10 +259,11 @@ def send_email():
         response = supabase.table("site_users").select("email").execute()
     else:
         response = supabase.table("site_users").select("email").eq('frequency', 'daily').execute()
-    emails = ",".join(x['email'] for x in response.data)
+    emails = (x['email'] for x in response.data)
     print(emails)
     try:
-        execute(recipient=emails, subject="test email", content="Shalom")
+        for email in emails:
+            execute(recipient=email, subject="test email", content="Shalom")
         return jsonify({"success": True})
     except Exception as e:
         return jsonify({"error": str(e)})
