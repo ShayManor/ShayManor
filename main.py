@@ -67,6 +67,7 @@ def create_blog():
     SUPABASE_SERVICE_KEY = data["SUPABASE_SERVICE_KEY"]
     SUPABASE_URL = data["SUPABASE_URL"]
     OPENAI_API_KEY = data["OPENAI_API_KEY"]
+    return jsonify({"test": "true"})
 
     # Located here to block anyone from pinging this with spoofed keys
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
@@ -85,7 +86,7 @@ def create_blog():
         return response.output_text
     articles = get_articles()
     current_date = date.today()
-    body = ping_gpt(system=get_body_system(current_date.strftime("%B %d")), prompt=str(articles), effort="high")
+    body = ping_gpt(system=get_body_system(current_date.strftime("%B %d")), prompt=str(articles), effort="medium")
     time.sleep(2)  # To stop rate limiting
     title = ping_gpt(system=get_title_system(), prompt=body, effort="low")
     time.sleep(2)
