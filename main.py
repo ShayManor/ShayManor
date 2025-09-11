@@ -113,6 +113,12 @@ def add_email():
     SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY')
     SUPABASE_URL = os.getenv('SUPABASE_URL')
 
+    if not SUPABASE_SERVICE_KEY:
+        return jsonify({"error": "No SUPABASE_SERVICE_KEY"})
+
+    if not SUPABASE_URL:
+        return jsonify({"error": "No SUPABASE_URL"})
+
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
     data_to_insert = {"email": email, "frequency": frequency}
     response = (
