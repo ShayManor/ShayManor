@@ -188,8 +188,7 @@ def remove_email():
             return jsonify({"error": "No SUPABASE_URL"})
 
         supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-        data_to_remove = {"email": email}
-        response = supabase.table("site_users").delete(data_to_remove).execute()
+        response = supabase.table("site_users").delete('*').eq('email', email).execute()
         return jsonify({"status": 200})
     except Exception as e:
         return jsonify({"error": str(e)})
