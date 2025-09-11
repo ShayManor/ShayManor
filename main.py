@@ -63,43 +63,45 @@ def any_page(page):
 
 @app.route("/create_blog_post", methods=["POST"])
 def create_blog():
-    data = request.get_json()
-    SUPABASE_SERVICE_KEY = data["SUPABASE_SERVICE_KEY"]
-    SUPABASE_URL = data["SUPABASE_URL"]
-    OPENAI_API_KEY = data["OPENAI_API_KEY"]
-    return jsonify({"test": "true"})
+    try:
+        data = request.get_json()
+        SUPABASE_SERVICE_KEY = data["SUPABASE_SERVICE_KEY"]
+        SUPABASE_URL = data["SUPABASE_URL"]
+        OPENAI_API_KEY = data["OPENAI_API_KEY"]
 
-    # Located here to block anyone from pinging this with spoofed keys
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        # Located here to block anyone from pinging this with spoofed keys
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-    def ping_gpt(system, prompt, effort) -> str:
-        client = OpenAI(api_key=OPENAI_API_KEY)
-        response = client.responses.create(
-            model="gpt-5",
-            reasoning={"effort": effort},
-            input=prompt,
-            instructions=system,
-            tools=[{
-                    "type": "web_search"
-                   }]
+        def ping_gpt(system, prompt, effort) -> str:
+            client = OpenAI(api_key=OPENAI_API_KEY)
+            response = client.responses.create(
+                model="gpt-5",
+                reasoning={"effort": effort},
+                input=prompt,
+                instructions=system,
+                tools=[{
+                        "type": "web_search"
+                       }]
+            )
+            return response.output_text
+        articles = get_articles()
+        current_date = date.today()
+        body = ping_gpt(system=get_body_system(current_date.strftime("%B %d")), prompt=str(articles), effort="medium")
+        time.sleep(2)  # To stop rate limiting
+        title = ping_gpt(system=get_title_system(), prompt=body, effort="low")
+        time.sleep(2)
+        tldr = ping_gpt(system=get_tldr_system(), prompt=body, effort="medium")
+
+        id = str(uuid.uuid4())
+        data_to_insert = {"id": id, "title": title, "body": body, "tldr": tldr}
+        response = (
+            supabase.table("site_blog")
+            .insert(data_to_insert)
+            .execute()
         )
-        return response.output_text
-    articles = get_articles()
-    current_date = date.today()
-    body = ping_gpt(system=get_body_system(current_date.strftime("%B %d")), prompt=str(articles), effort="medium")
-    time.sleep(2)  # To stop rate limiting
-    title = ping_gpt(system=get_title_system(), prompt=body, effort="low")
-    time.sleep(2)
-    tldr = ping_gpt(system=get_tldr_system(), prompt=body, effort="medium")
-
-    id = str(uuid.uuid4())
-    data_to_insert = {"id": id, "title": title, "body": body, "tldr": tldr}
-    response = (
-        supabase.table("site_blog")
-        .insert(data_to_insert)
-        .execute()
-    )
-    return jsonify({"status":id})
+        return jsonify({"status":id})
+    except Exception as e:
+        return jsonify({"error": e.with_traceback()})
 
 
 if __name__ == "__main__":
