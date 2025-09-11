@@ -1,0 +1,38 @@
+name: Create and Upload Blog Post
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # Runs daily at 00:00 UTC
+  workflow_dispatch: {}
+
+concurrency:
+  group: create-blog-post
+  cancel-in-progress: false
+
+jobs:
+  call-endpoint:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - name: Curl API (fail on HTTP errors, retry transient failures)
+        shell: bash
+        run: |
+          # Build JSON safely with shell expansion
+          payload=$(cat <<EOF
+          {
+            "SUPABASE_URL": "${SUPABASE_URL}",
+            "SUPABASE_SERVICE_KEY": "${SUPABASE_SERVICE_KEY}",
+            "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+          }
+          EOF
+          )
+
+          # Call endpoint
+          curl -fsS --retry 5 --retry-delay 10 --max-time 300 \
+            -H "Content-Type: application/json" \
+            -X POST \
+            -d "${payload}" \
+            "https://shaymanor.com/create_blog_post"
