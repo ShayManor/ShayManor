@@ -734,6 +734,181 @@
             flex-wrap: wrap;
         }
 
+        /* Blog Page Styles */
+        .blog-posts-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-post {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 245, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .blog-post-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        .blog-post-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .blog-post-date {
+            color: #00f5ff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .blog-post-tldr {
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #00f5ff;
+            font-style: italic;
+        }
+
+        .blog-post-tldr::before {
+            content: "TL;DR: ";
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        .blog-post-content {
+            color: #cccccc;
+            line-height: 1.7;
+        }
+
+        .blog-post-content h1,
+        .blog-post-content h2,
+        .blog-post-content h3,
+        .blog-post-content h4,
+        .blog-post-content h5,
+        .blog-post-content h6 {
+            color: #ffffff;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .blog-post-content h1 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(0, 245, 255, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .blog-post-content h2 {
+            font-size: 1.5rem;
+        }
+
+        .blog-post-content h3 {
+            font-size: 1.3rem;
+        }
+
+        .blog-post-content p {
+            margin-bottom: 1rem;
+        }
+
+        .blog-post-content a {
+            color: #00f5ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .blog-post-content a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .blog-post-content blockquote {
+            border-left: 4px solid #00f5ff;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #999999;
+        }
+
+        .blog-post-content code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .blog-post-content pre {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .blog-post-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .blog-post-content ul,
+        .blog-post-content ol {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .blog-post-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #00f5ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 3rem;
+            color: #ff6b6b;
+        }
+
+        .no-posts {
+            text-align: center;
+            padding: 3rem;
+            color: #cccccc;
+        }
+
         .floating-shapes {
             position: absolute;
             width: 100%;
@@ -872,6 +1047,7 @@
             <li><a href="#" onclick="showPage('home')">Home</a></li>
             <li><a href="#" onclick="showPage('projects')">Projects</a></li>
             <li><a href="#" onclick="showPage('github')">GitHub</a></li>
+            <li><a href="#" onclick="showPage('blog')">Blog</a></li>
             <li><a href="#" onclick="showPage('about')">About</a></li>
             <li><a href="#" onclick="showPage('resume')">Resume</a></li>
         </ul>
@@ -1440,6 +1616,23 @@
     </div>
 </div>
 
+<div id="blog" class="page">
+    <div class="container">
+        <h2 class="section-title" style="margin-top: 2rem;">Blog</h2>
+
+        <div id="blog-loading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading blog posts...</p>
+        </div>
+
+        <div id="blog-error" class="error-container" style="display: none;">
+            <p>Unable to load blog posts. Please try again later.</p>
+        </div>
+
+        <div id="blog-posts" class="blog-posts-container"></div>
+    </div>
+</div>
+
 <div id="resume" class="page">
     <div class="container">
         <h2 class="section-title" style="margin-top: 2rem;">Resume & Contact</h2>
@@ -1645,7 +1838,118 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+    // Supabase configuration
+    const SUPABASE_URL = 'https://eteavfeiumodbjywzqfa.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZWF2ZmVpdW1vZGJqeXd6cWZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5NTY1MDIsImV4cCI6MjA3MDUzMjUwMn0.OoB4llKDEtXq0CGgPavqMYEAsZtRF8St_C-YPU-MNPw';
+
+    // Global variable to store blog posts
+    let blogPosts = [];
+
+    // Format date function
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC'
+        };
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    // Fetch blog posts from Supabase
+    async function fetchBlogPosts() {
+        const loadingEl = document.getElementById('blog-loading');
+        const errorEl = document.getElementById('blog-error');
+        const postsEl = document.getElementById('blog-posts');
+
+        try {
+            loadingEl.style.display = 'block';
+            errorEl.style.display = 'none';
+            postsEl.innerHTML = '';
+
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/site_blog?order=created_at.desc`, {
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const posts = await response.json();
+            blogPosts = posts;
+
+            loadingEl.style.display = 'none';
+
+            if (posts.length === 0) {
+                postsEl.innerHTML = '<div class="no-posts"><p>No blog posts found.</p></div>';
+                return;
+            }
+
+            renderBlogPosts(posts);
+
+        } catch (error) {
+            console.error('Error fetching blog posts:', error);
+            loadingEl.style.display = 'none';
+            errorEl.style.display = 'block';
+        }
+    }
+
+    // Render blog posts
+    function renderBlogPosts(posts) {
+        const postsEl = document.getElementById('blog-posts');
+
+        const postsHTML = posts.map(post => {
+            const formattedDate = formatDate(post.created_at);
+            const renderedContent = marked.parse(post.body || '');
+
+            // Check if TL;DR already exists in the tldr text (more robust detection)
+            const tldrText = post.tldr || '';
+            const hasTldrPrefix = /^(tl;dr|tldr)[\s:]/i.test(tldrText.trim());
+            const tldrClass = hasTldrPrefix ? 'blog-post-tldr has-tldr' : 'blog-post-tldr';
+
+            // Debug logging
+            console.log('TLDR Text:', tldrText);
+            console.log('Has TLDR Prefix:', hasTldrPrefix);
+            console.log('Class:', tldrClass);
+
+            return `
+                <article class="blog-post">
+                    <div class="blog-post-header">
+                        <h2 class="blog-post-title">${escapeHtml(post.title || 'Untitled')}</h2>
+                        <div class="blog-post-date">${formattedDate}</div>
+                    </div>
+
+                    ${post.tldr ? `<div class="${tldrClass}">${escapeHtml(post.tldr)}</div>` : ''}
+
+                    <div class="blog-post-content">
+                        ${renderedContent}
+                    </div>
+                </article>
+            `;
+        }).join('');
+
+        postsEl.innerHTML = postsHTML;
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
     function showPage(pageId) {
         // Hide all pages
         const pages = document.querySelectorAll('.page');
@@ -1667,6 +1971,11 @@
         // Close mobile menu when navigating
         document.querySelector('.nav-links').classList.remove('active');
         document.querySelector('.mobile-menu-toggle').classList.remove('active');
+
+        // Load blog posts when blog page is shown
+        if (pageId === 'blog' && blogPosts.length === 0) {
+            fetchBlogPosts();
+        }
     }
 
     function toggleMobileMenu() {

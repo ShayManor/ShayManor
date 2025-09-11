@@ -2,7 +2,7 @@ name: Create and Upload Blog Post
 
 on:
   schedule:
-    - cron: "0 0 * * *"   # Runs daily at 00:00 UTC
+    - cron: "0 10 * * *"   # Runs daily at 00:00 UTC
   workflow_dispatch: {}
 
 concurrency:
@@ -17,7 +17,7 @@ jobs:
       SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
-      - name: Curl API (fail on HTTP errors, retry transient failures)
+      - name: Curl API (fail on HTTP errors)
         shell: bash
         run: |
           # Build JSON safely with shell expansion
