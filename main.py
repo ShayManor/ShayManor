@@ -68,7 +68,6 @@ def create_blog():
         SUPABASE_SERVICE_KEY = data["SUPABASE_SERVICE_KEY"]
         SUPABASE_URL = data["SUPABASE_URL"]
         OPENAI_API_KEY = data["OPENAI_API_KEY"]
-
         # Located here to block anyone from pinging this with spoofed keys
         supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
@@ -101,7 +100,7 @@ def create_blog():
         )
         return jsonify({"status":id})
     except Exception as e:
-        return jsonify({"error": e.with_traceback()})
+        return jsonify({"error": str(e)})
 
 
 if __name__ == "__main__":
