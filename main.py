@@ -201,24 +201,22 @@ def execute(recipient: str, subject: str, content: str):
     :param recipient: email address to send to
     :return: "Email sent"
     """
-    print("Email:", recipient, subject)
 
-    path = Path("/secrets")
     SCOPES = ["https://mail.google.com/"]
     creds = None
-    if os.path.exists(path / "token/mail_token.json"):
+    if os.path.exists("/secrets/token/mail_token.json"):
         creds = Credentials.from_authorized_user_file(
-            (path / "token/mail_token.json").__str__(), SCOPES
+            "/secrets/token/mail_token.json", SCOPES
         )
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                (path / "client/gcloud_cfg.json").__str__(), SCOPES
+                "/secrets/client/gcloud_cfg.json", SCOPES
             )
             creds = flow.run_local_server(port=0)
-        with open("token/mail_token.json", "w") as token:
+        with open("/secrets/token/mail_token.json", "w") as token:
             token.write(creds.to_json())
 
     try:
