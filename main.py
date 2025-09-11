@@ -1,5 +1,6 @@
 import json
 import os
+import time
 import uuid
 from dataclasses import dataclass
 from datetime import date
@@ -85,7 +86,9 @@ def create_blog():
     articles = get_articles()
     current_date = date.today()
     body = ping_gpt(system=get_body_system(current_date.strftime("%B %d")), prompt=str(articles), effort="high")
+    time.sleep(2)  # To stop rate limiting
     title = ping_gpt(system=get_title_system(), prompt=body, effort="low")
+    time.sleep(2)
     tldr = ping_gpt(system=get_tldr_system(), prompt=body, effort="medium")
 
 
