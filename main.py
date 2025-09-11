@@ -251,19 +251,21 @@ def send_email():
     SUPABASE_URL = os.getenv("SUPABASE_URL")
 
     if not SUPABASE_SERVICE_KEY:
-        return jsonify({"error": "No SUPABASE_SERVICE_KEY"})
+        return jsonify({"error": "No SUPABASE_SERVICE_KEY"}, 500)
 
     if not SUPABASE_URL:
-        return jsonify({"error": "No SUPABASE_URL"})
+        return jsonify({"error": "No SUPABASE_URL"}, 500)
 
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
     current_day = datetime.datetime.now().weekday()
-    if current_day == 0:
-        supabase.table("site_users").select("gmail").execute()
+    if current_day == 6:
+        response = supabase.table("site_users").select("email").execute()
     else:
-        supabase.table("site_users").select("gmail").eq('frequency', 'daily').execute()
+        response = supabase.table("site_users").select("email").eq('frequency', 'daily').execute()
+    emails = ",".join(x['email'] for x in response.data)
+    print(emails)
     try:
-        execute(recipient="shay.manor@gmail.com", subject="test email", content="Shalom")
+        execute(recipient=emails, subject="test email", content="Shalom")
         return jsonify({"success": True})
     except Exception as e:
         return jsonify({"error": str(e)})
