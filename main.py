@@ -40,8 +40,8 @@ def get_title_system():
 def get_tldr_system():
     return "You are an expert at summarizing technical articles in a clear and understandable way. Without losing important information, write a 1 paragraph, short and clear tldr for this article. Be accurate. Only return the paragraph tldr summary. Don't start with TLDR or anything similar, just return the paragraph text."
 
-def write_email(body, tldr):
-    return f"TL;DR: {tldr}\n\n{body}\n\nTo"
+def write_email(body, tldr, recipient_email):
+    return f"TL;DR: {tldr}\n\n{body}\n\nIf you no longer want to receive these emails, [unsubscribe here](https://shaymanor.com/remove_email/{recipient_email})."
 
 @dataclass
 class Article:
@@ -211,17 +211,20 @@ def execute(recipient: str, subject: str, content: str):
         creds = Credentials.from_authorized_user_file(
             token_secret_file, SCOPES
         )
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
+        if not creds.valid and creds.refresh_token:
             creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                client_secret_file, SCOPES
-            )
-            creds = flow.run_local_server(port=0)
-        with open("./mail_token.json", "w") as token:
-            token_secret_file = "./mail_token.json"
-            token.write(creds.to_json())
+
+    # if not creds or not creds.valid:
+    #     if creds and creds.expired and creds.refresh_token:
+    #         creds.refresh(Request())
+    #     else:
+    #         flow = InstalledAppFlow.from_client_secrets_file(
+    #             client_secret_file, SCOPES
+    #         )
+    #         creds = flow.run_local_server(port=0)
+    #     with open("./mail_token.json", "w") as token:
+    #         token_secret_file = "./mail_token.json"
+    #         token.write(creds.to_json())
 
     try:
         html_content = markdown2.markdown(content)
@@ -279,7 +282,7 @@ def send_email():
     # Send email
     try:
         for email in emails:
-            execute(recipient=email, subject=subject, content="Shalom")
+            execute(recipient=email, subject=subject, content=write_email(content, tldr, email))
         return jsonify({"success": True})
     except Exception as e:
         trace = traceback.format_exc()
