@@ -275,9 +275,9 @@ def send_email():
 
     # Get content
     blog_data = supabase.table("site_blog").select('*').order('created_at', desc=True).execute()
-    subject = blog_data.data['title']
-    content = blog_data.data['body']
-    tldr = blog_data.data['tldr']
+    subject = blog_data.data[0]['title']
+    content = blog_data.data[0]['body']
+    tldr = blog_data.data[0]['tldr']
 
     # Send email
     try:
