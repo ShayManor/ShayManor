@@ -10,6 +10,7 @@ from datetime import date
 from pathlib import Path
 from typing import Optional
 
+import markdown2
 import requests
 from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
@@ -39,6 +40,8 @@ def get_title_system():
 def get_tldr_system():
     return "You are an expert at summarizing technical articles in a clear and understandable way. Without losing important information, write a 1 paragraph, short and clear tldr for this article. Be accurate. Only return the paragraph tldr summary. Don't start with TLDR or anything similar, just return the paragraph text."
 
+def write_email(body, tldr):
+    return f"TL;DR: {tldr}\n\n{body}\n\nTo"
 
 @dataclass
 class Article:
@@ -172,11 +175,9 @@ def add_email():
         return jsonify({"error": str(e)})
 
 
-@app.route("/remove_email", methods=["POST"])
-def remove_email():
+@app.route("/remove_email/<email>", methods=["GET", "POST"])
+def remove_email(email):
     try:
-        data = request.get_json()
-        email = data.get("email")
         if not email:
             raise ValueError("Email not found!")
         SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
@@ -223,9 +224,12 @@ def execute(recipient: str, subject: str, content: str):
             token.write(creds.to_json())
 
     try:
+        html_content = markdown2.markdown(content)
+
         service = build("gmail", "v1", credentials=creds)
         message = EmailMessage()
         message.set_content(content)
+        message.add_alternative(html_content, subtype="html")
 
         message["To"] = (
             recipient
@@ -248,6 +252,7 @@ def execute(recipient: str, subject: str, content: str):
 
 @app.route("/send_email", methods=["GET"])
 def send_email():
+    # Get emails
     SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
     SUPABASE_URL = os.getenv("SUPABASE_URL")
 
@@ -264,10 +269,17 @@ def send_email():
     else:
         response = supabase.table("site_users").select("email").eq('frequency', 'daily').execute()
     emails = (x['email'] for x in response.data)
-    print(emails)
+
+    # Get content
+    blog_data = supabase.table("site_blog").select('*').order('created_at', desc=True).execute()
+    subject = blog_data.data['title']
+    content = blog_data.data['body']
+    tldr = blog_data.data['tldr']
+
+    # Send email
     try:
         for email in emails:
-            execute(recipient=email, subject="test email", content="Shalom")
+            execute(recipient=email, subject=subject, content="Shalom")
         return jsonify({"success": True})
     except Exception as e:
         trace = traceback.format_exc()
