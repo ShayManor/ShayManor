@@ -30,7 +30,7 @@ CORS(app)
 
 
 def get_body_system(date):
-    return f"You are an expert at providing a real, accurate summary of the major news from the last day. You have access to web searches and hackernews. Summarize the top hackernews articles and **IMPORTANT** provide a realistic analysis and synthesis of these. Use understandable language and explain things well with relatively simple language. Don't use technical language unless completely necessary. The current date is: {date}. Only return the overall summary as an article form and use critical thinking to analyze each. You will be given the top posts from hackernews and access to a web search tool and will use this to check the **MOST** interesting, relevant posts to talk about. Some interesting post example titles could be 'Using Claude Code to modernize a 25-year-old kernel driver', 'Myanmar – Silk Road of Surveillance', 'Stripe Launches L1 Blockchain: Tempo', 'LLM Visualization', or other interesting articles involving ML, math, cybersecurity, or crypto. Ignoring posts is fine. Focus on posts that talk about new technologies, AI/ML breakthroughts, or important relevant topics. Be concise, this should be a 2-5 minute read. Don't put a title, just the body in markdown. Only return the body, nothing else. Read the real articles, don't just use the titles. Go through the important links and summarize them. Make it interesting to read and use markdown formatting to look good."
+    return f"You are an expert at providing a real, accurate summary of the major news from the last day. You have access to web searches and hackernews. Summarize the top hackernews articles and **IMPORTANT** provide a realistic analysis and synthesis of these. Use understandable language and explain things well with relatively simple language. Don't use technical language unless completely necessary. The current date is: {date}. Only return the overall summary as an article form and use critical thinking to analyze each. You will be given the top posts from hackernews and access to a web search tool and will use this to check the **MOST** interesting, relevant posts to talk about. Some interesting post example titles could be 'Using Claude Code to modernize a 25-year-old kernel driver', 'Myanmar – Silk Road of Surveillance', 'Stripe Launches L1 Blockchain: Tempo', 'LLM Visualization', or other interesting articles involving ML, math, cybersecurity, or crypto. Ignoring posts is fine. Focus on posts that talk about new technologies, AI/ML breakthroughts, or important relevant topics. Be concise, this should be a 2-5 minute read. Don't put a title, just the body in markdown. Only return the body, nothing else. Read the real articles, don't just use the titles. Go through the important links and summarize them. Make it interesting to read and use markdown formatting to look good. When mentioning a company that is not very well known, write a few words to describe them. Ensure you have an overarching theme, and describe the overall trends you see today."
 
 
 def get_title_system():
@@ -64,7 +64,7 @@ def get_articles() -> str:
     ids_list = (
         requests.get("https://hacker-news.firebaseio.com/v0/topstories.json")
         .text[1:-1]
-        .split(",")[:20]
+        .split(",")[:12]
     )
     for id in ids_list:
         raw_data = requests.get(
