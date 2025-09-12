@@ -30,18 +30,21 @@ CORS(app)
 
 
 def get_body_system(date):
-    return f"You are an expert at providing a real, accurate summary of the major news from the last day. You have access to web searches and hackernews. Summarize the top hackernews articles and **IMPORTANT** provide a realistic analysis and synthesis of these. Use understandable language and explain things well with relatively simple language. Don't use technical language if its not necessary. The current date is: {date}. Only return the overall summary as an article form and use critical thinking to analyze each. You will be given the top posts from hackernews and access to a web search tool and will use this to check the **MOST** interesting, relevant posts to talk about. Some interesting post example titles could be 'Using Claude Code to modernize a 25-year-old kernel driver', 'Myanmar – Silk Road of Surveillance', 'Stripe Launches L1 Blockchain: Tempo', 'LLM Visualization', or other interesting articles involving ML, math, cybersecurity, or crypto. Ignoring posts is fine. Focus on posts that talk about new technologies, AI/ML breakthroughts, or important relevant topics. Be concise, this should be a 2-5 minute read. Don't put a title, just the body in markdown. Only return the body, nothing else. Read the real articles, don't just use the titles. Go through the important links and summarize them."
+    return f"You are an expert at providing a real, accurate summary of the major news from the last day. You have access to web searches and hackernews. Summarize the top hackernews articles and **IMPORTANT** provide a realistic analysis and synthesis of these. Use understandable language and explain things well with relatively simple language. Don't use technical language unless completely necessary. The current date is: {date}. Only return the overall summary as an article form and use critical thinking to analyze each. You will be given the top posts from hackernews and access to a web search tool and will use this to check the **MOST** interesting, relevant posts to talk about. Some interesting post example titles could be 'Using Claude Code to modernize a 25-year-old kernel driver', 'Myanmar – Silk Road of Surveillance', 'Stripe Launches L1 Blockchain: Tempo', 'LLM Visualization', or other interesting articles involving ML, math, cybersecurity, or crypto. Ignoring posts is fine. Focus on posts that talk about new technologies, AI/ML breakthroughts, or important relevant topics. Be concise, this should be a 2-5 minute read. Don't put a title, just the body in markdown. Only return the body, nothing else. Read the real articles, don't just use the titles. Go through the important links and summarize them. Make it interesting to read and use markdown formatting to look good."
 
 
 def get_title_system():
-    return "You are an expert at taking an article and giving it a short, clear title. No need for super dramatic titles. It should be 2-10 words and accurately encapsulate what happens and the overall theme. Only return the title."
+    return "You are an expert at taking an article and giving it a short, clear title. No need for super dramatic titles. It should be 2-5 words and accurately encapsulate what happens and the overall theme. Only return the title."
 
 
 def get_tldr_system():
-    return "You are an expert at summarizing technical articles in a clear and understandable way. Without losing important information, write a 1 paragraph, short and clear tldr for this article. Be accurate. Only return the paragraph tldr summary. Don't start with TLDR or anything similar, just return the paragraph text."
+    return "You are an expert at summarizing technical articles in a clear and understandable way. Without losing important information, write a 1 paragraph, short and clear tldr for this article. Be accurate. Only return the paragraph tldr summary. Don't start with TLDR or anything similar, just return the paragraph text in markdown formatting. Avoid technical terms when you can or explain them when very necessary. Use language the average developer can understand."
 
 def write_email(body, tldr, recipient_email):
     return f"TL;DR: {tldr}\n\n{body}\n\nIf you no longer want to receive these emails, [unsubscribe here](https://shaymanor.com/remove_email/{recipient_email})."
+
+def get_title(title):
+    return f"ML Newsletter - {title}"
 
 @dataclass
 class Article:
@@ -204,7 +207,6 @@ def execute(recipient: str, subject: str, content: str):
     """
 
     SCOPES = ["https://mail.google.com/"]
-    client_secret_file = "/secrets/client/gcloud_cfg.json"
     token_secret_file = "/secrets/token/mail_token.json"
     creds = None
     if os.path.exists(token_secret_file):
@@ -213,19 +215,6 @@ def execute(recipient: str, subject: str, content: str):
         )
         if not creds.valid and creds.refresh_token:
             creds.refresh(Request())
-
-    # if not creds or not creds.valid:
-    #     if creds and creds.expired and creds.refresh_token:
-    #         creds.refresh(Request())
-    #     else:
-    #         flow = InstalledAppFlow.from_client_secrets_file(
-    #             client_secret_file, SCOPES
-    #         )
-    #         creds = flow.run_local_server(port=0)
-    #     with open("./mail_token.json", "w") as token:
-    #         token_secret_file = "./mail_token.json"
-    #         token.write(creds.to_json())
-
     try:
         html_content = markdown2.markdown(content)
 
@@ -282,7 +271,7 @@ def send_email():
     # Send email
     try:
         for email in emails:
-            execute(recipient=email, subject=subject, content=write_email(content, tldr, email))
+            execute(recipient=email, subject=get_title(subject), content=write_email(content, tldr, email))
         return jsonify({"success": True})
     except Exception as e:
         trace = traceback.format_exc()
