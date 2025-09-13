@@ -10,10 +10,20 @@ body.has-fixed-nav {
   margin-top: var(--nav-height);
 }
 /* when jumping to #anchors, stop under the fixed nav */
+:root { --site-bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); }
+
 html {
-  scroll-padding-top: var(--nav-height);
+  background: #0a0a0a;                 /* fallback */
+  background-image: var(--site-bg);
+  background-attachment: fixed;        /* keeps it visible during rubber-band */
+  background-size: cover;
 }
 
+/* let the html background show through */
+body {
+  background: transparent;
+  min-height: 100dvh;                   /* modern viewport unit for mobile */
+}
 * {
     margin: 0;
     padding: 0;
