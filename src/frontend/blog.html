@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Shay Manor</title>
+  <meta name="description" content="AI/ML insights, notes, and project updates.">
+  <link rel="canonical" href="https://shaymanor.com/blog">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="Shay Manor">
+  <meta property="og:title" content="Blog — Shay Manor"><meta property="og:description" content="Posts and updates.">
+  <meta property="og:url" content="https://shaymanor.com/blog">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" type="text/css">
+  <!-- Marked for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <nav class="navbar"><div class="nav-container"><div class="logo">Shay Manor</div>
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li><li><a href="/projects">Projects</a></li><li><a href="/github">GitHub</a></li>
+      <li><a href="/blog">Blog</a></li><li><a href="/about">About</a></li><li><a href="/resume">Resume</a></li>
+    </ul></div></nav>
+
+  <div class="container">
+    <h2 class="section-title" style="margin-top: 2rem;">Blog</h2>
+
+    <!-- Newsletter Floating Button & Panel -->
+    <div class="newsletter-float-container">
+      <div class="newsletter-float-toggle" onclick="toggleNewsletter()" id="newsletterFloatToggle">
+        <i class="fas fa-envelope" id="newsletterFloatIcon"></i>
+        <span class="newsletter-float-text">Newsletter</span>
+      </div>
+      <div class="newsletter-signup-expanded" id="newsletterSignup" style="display: none;">
+        <div class="newsletter-signup-header">
+          <h4>Stay Updated</h4>
+          <button class="newsletter-close" onclick="toggleNewsletter()"><i class="fas fa-times"></i></button>
+        </div>
+        <p>Get AI/ML insights delivered to your inbox</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label>Frequency</label>
+            <div class="frequency-options">
+              <div class="frequency-option">
+                <input type="radio" id="daily" name="frequency" value="daily" checked>
+                <label for="daily">Daily</label>
+              </div>
+              <div class="frequency-option">
+                <input type="radio" id="weekly" name="frequency" value="weekly">
+                <label for="weekly">Weekly</label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="newsletter-submit" id="newsletterButton"><i class="fas fa-paper-plane"></i> Subscribe</button>
+        </form>
+        <div id="newsletterMessage" class="newsletter-message" style="display: none;"></div>
+      </div>
+    </div>
+
+    <div id="blog-loading" class="loading-container"><div class="loading-spinner"></div><p>Loading blog posts...</p></div>
+    <div id="blog-error" class="error-container" style="display: none;"><p>Unable to load blog posts. Please try again later.</p></div>
+    <div id="blog-posts" class="blog-posts-container"></div>
+  </div>
+
+  <script src="/scripts.js"></script>
+</body>
+</html>

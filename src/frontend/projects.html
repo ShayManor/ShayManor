@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Shay Manor</title>
+  <meta name="description" content="All projects by Shay Manor: GPU Finder, ShayGPT, Kalman toolkit, quantum NLP, and more.">
+  <link rel="canonical" href="https://shaymanor.com/projects">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="Shay Manor">
+  <meta property="og:title" content="Projects — Shay Manor"><meta property="og:description" content="Project portfolio.">
+  <meta property="og:url" content="https://shaymanor.com/projects">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" type="text/css">
+</head>
+<body>
+  <nav class="navbar"><div class="nav-container"><div class="logo">Shay Manor</div>
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li><li><a href="/projects">Projects</a></li><li><a href="/github">GitHub</a></li>
+      <li><a href="/blog">Blog</a></li><li><a href="/about">About</a></li><li><a href="/resume">Resume</a></li>
+    </ul></div></nav>
+
+  <div class="container">
+    <h2 class="section-title" style="margin-top: 2rem;">All Projects</h2>
+
+    <!-- Coreweave LLM Fine-tuning Platform -->
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-robot"></i></div>
+      <div class="project-card-content"><h3>Coreweave LLM Fine-tuning Platform</h3>
+        <p>Built an automated platform for fine-tuning LLMs with configurable Docker images (1k+ downloads). Fine-tuned Llama 3.1 8b achieving 48% MFU and improving MT-Bench scores by 28%, with load-balanced inference pipeline using vLLM.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">Flash Attention 2</span><span class="tech-tag">DeepSpeed</span><span class="tech-tag">Docker</span><span class="tech-tag">vLLM</span><span class="tech-tag">Slurm</span><span class="tech-tag">Kubernetes</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://github.com/CoreWeave/finetuner" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+          <a href="https://ghcr.io/coreweave/finetuner" class="project-link" target="_blank"><i class="fab fa-docker"></i> Public Image</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-atom"></i></div>
+      <div class="project-card-content"><h3>Quantum AI Natural Language Processing Model</h3>
+        <p>Developed a sentiment analysis model leveraging D-Wave's quantum annealer for faster optimization, achieving 85% accuracy on tweet data using an optimized Naive Bayes Algorithm, outperforming classical optimizers by 3%.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">D-Wave</span><span class="tech-tag">Quantum Computing</span><span class="tech-tag">NLP</span><span class="tech-tag">Naive Bayes</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://github.com/ShayManor/Quantum_Sentiment_Analysis" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-atom"></i></div>
+      <div class="project-card-content"><h3>GPU Finder</h3>
+        <p>Built gpufindr, a platform to compare GPU instance prices across various providers. Developed API and MCP and connected to AI agent to automatically find and rent the best instance for each project from a text input.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">Golang</span><span class="tech-tag">MCP</span><span class="tech-tag">GCR</span><span class="tech-tag">AI Agents</span><span class="tech-tag">APIs</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://github.com/ShayManor/gpuscanner" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+          <a href="https://gpufindr.com" class="project-link" target="_blank"><i class="fas fa-file-alt"></i> Publication</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-code"></i></div>
+      <div class="project-card-content"><h3>Smith AI</h3>
+        <p>For BoilerMake XII: Developed platform to create AI agents on demand and connect them. Won 1st place for: Caterpillar best use of Cloud Computing, MLH Best use of Generative AI, Purdue Innovates: Most likely to become a business</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">Python</span><span class="tech-tag">A2A</span><span class="tech-tag">MCP</span><span class="tech-tag">AI Agents</span><span class="tech-tag">AWS</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://github.com/ShayManor/BoilerMakeSmithAI" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-database"></i></div>
+      <div class="project-card-content"><h3>Reddit Data ETL Pipeline</h3>
+        <p>Built an ETL pipeline to clean and process 34TB of Reddit text data into 5GB of high-quality training data using CAIOS and CKS filtering systems for machine learning applications.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">ETL</span><span class="tech-tag">Data Processing</span><span class="tech-tag">Big Data</span><span class="tech-tag">SQL</span><span class="tech-tag">Golang</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://github.com/CoreWeave/reddit-data-processing" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-calculator"></i></div>
+      <div class="project-card-content"><h3>Grover-based Quantum Benchmarking Toolkit</h3>
+        <p>Authored and published a comprehensive benchmarking toolkit for assessing quantum hardware performance using Grover's algorithm, with standardized metrics for quantum system evaluation.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">Quantum Computing</span><span class="tech-tag">Grover's Algorithm</span><span class="tech-tag">Benchmarking</span><span class="tech-tag">Qiskit</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://arxiv.org/abs/2504.19387" class="project-link" target="_blank"><i class="fas fa-book"></i> Publication</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-plane"></i></div>
+      <div class="project-card-content"><h3>Autonomous Campus Drone Delivery System</h3>
+        <p>Part of ARC (Autonomous Robotics Club), designed and built a fully autonomous campus drone delivery system for packages using PX4 flight controller and computer vision.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">PX4</span><span class="tech-tag">Computer Vision</span><span class="tech-tag">ROS2</span><span class="tech-tag">Autonomous Systems</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://github.com/purdue-arc" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card"><div class="project-image-small"><i class="fas fa-atom"></i></div>
+      <div class="project-card-content"><h3>Physics Simulator</h3>
+        <p>Simulate rigid bodies with integration for relativity, gravity, and special environments.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">Java</span><span class="tech-tag">GCP</span><span class="tech-tag">React</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts.js"></script>
+</body>
+</html>
