@@ -7,11 +7,6 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
 /* apply only on non-home pages */
 body.has-fixed-nav {
   padding-top: var(--nav-height);
