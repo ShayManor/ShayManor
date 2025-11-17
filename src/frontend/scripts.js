@@ -109,7 +109,7 @@
       if (errorEl) errorEl.style.display = 'none';
       postsEl.innerHTML = '';
 
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/site_blog?order=created_at.desc`, {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/site_blog?order=created_at.desc&limit=20`, {
         headers: {
           'apikey': SUPABASE_ANON_KEY,
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
