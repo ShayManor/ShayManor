@@ -11,18 +11,11 @@ from typing import Optional
 
 import markdown2
 import requests
-from flask import Flask, jsonify, request, Blueprint
+from flask import jsonify, request, Blueprint
 from googleapiclient.errors import HttpError
 from supabase import create_client
 
-from openai import OpenAI
-from supabase import Client
-
 from email.message import EmailMessage
-
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
 
 blog = Blueprint("blog", __name__)
 
@@ -96,12 +89,13 @@ def get_articles() -> str:
 @blog.route("/create_blog_post", methods=["POST"])
 def create_blog():
     try:
+        from openai import OpenAI
         data = request.get_json()
         SUPABASE_SERVICE_KEY = data["SUPABASE_SERVICE_KEY"]
         SUPABASE_URL = data["SUPABASE_URL"]
         OPENAI_API_KEY = data["OPENAI_API_KEY"]
         # Located here to block anyone from pinging this with spoofed keys
-        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
         def ping_gpt(system, prompt, effort, model="gpt-5") -> str:
             client = OpenAI(api_key=OPENAI_API_KEY)
@@ -161,7 +155,7 @@ def add_email():
         if not SUPABASE_URL:
             return jsonify({"error": "No SUPABASE_URL"})
 
-        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
         data_to_insert = {"email": email, "frequency": frequency}
         response = supabase.table("site_users").insert(data_to_insert).execute()
         return jsonify({"status": 200})
@@ -183,7 +177,7 @@ def remove_email(email):
         if not SUPABASE_URL:
             return jsonify({"error": "No SUPABASE_URL"})
 
-        supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+        supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
         response = supabase.table("site_users").delete().eq("email", email).execute()
         return jsonify({"status": 200})
     except Exception as e:
@@ -196,6 +190,9 @@ def execute(recipient: str, subject: str, content: str):
     :param recipient: email address to send to
     :return: "Email sent"
     """
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from googleapiclient.discovery import build
 
     SCOPES = ["https://mail.google.com/"]
     token_secret_file = "/secrets/token/mail_token.json"
@@ -241,7 +238,7 @@ def send_email():
     if not SUPABASE_URL:
         return jsonify({"error": "No SUPABASE_URL"}, 500)
 
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+    supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
     current_day = datetime.datetime.now().weekday()
     if current_day == 6:
         response = supabase.table("site_users").select("email").execute()
