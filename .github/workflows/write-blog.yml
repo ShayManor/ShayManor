@@ -2,7 +2,7 @@ name: Create and Upload Blog Post
 
 on:
   schedule:
-    - cron: "0 10 * * *"   # Runs daily at 00:00 UTC
+    - cron: "0 10 */3 * *"   # Runs daily at 00:00 UTC
   workflow_dispatch: {}
 
 concurrency:
