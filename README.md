@@ -8,6 +8,8 @@
 </tr>
 </table>
 
+Currently focused on applications of AI in autonomous racing.
+
 <!--
 **shaymanor/shaymanor** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
