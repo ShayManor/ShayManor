@@ -539,28 +539,24 @@ body {
     background: rgba(255, 255, 255, 0.08);
 }
 
-.repo-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.repo-header h3 {
+.github-card h3 {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 1.2rem;
     color: #ffffff;
+    margin-bottom: 0.75rem;
 }
 
 .repo-language {
+    display: inline-block;
     font-size: 0.8rem;
     padding: 0.25rem 0.75rem;
     background: rgba(0, 245, 255, 0.2);
     color: #00f5ff;
     border-radius: 12px;
     border: 1px solid rgba(0, 245, 255, 0.3);
+    margin-bottom: 1rem;
 }
 
 .github-card p {
