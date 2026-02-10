@@ -71,6 +71,13 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
+.logo a {
+    text-decoration: none;
+    background: linear-gradient(45deg, #00f5ff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .mobile-menu-toggle {
     display: none;
     flex-direction: column;
