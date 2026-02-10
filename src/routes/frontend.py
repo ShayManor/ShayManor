@@ -27,11 +27,6 @@ def projects():
     return send_from_directory(frontend.static_folder, "projects.html")
 
 
-@frontend.route("/github", methods=["GET"])
-def github():
-    return send_from_directory(frontend.static_folder, "github.html")
-
-
 @frontend.route("/blog", methods=["GET"])
 def blog():
     return send_from_directory(frontend.static_folder, "blog.html")
