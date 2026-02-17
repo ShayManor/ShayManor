@@ -1,5 +1,6 @@
 ### Hi there 👋
-
+<a href="https://u8views.com/github/ShayManor"><img src="https://u8views.com/api/v1/github/profiles/34466739/views/day-week-month-total-count.svg"></a>
+[![GitHub Streak](https://streak-stats.demolab.com/?user=ShayManor)](https://git.io/streak-stats)
 <table>
 <tr>
 <!-- <td><img src="https://github-readme-stats.vercel.app/api?username=shaymanor&show_icons=true&count_private=true&theme=radical"></td> -->
