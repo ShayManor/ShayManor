@@ -475,9 +475,38 @@ body {
 
 .filter-btn:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(0, 245, 255, 0.3);
-    color: #00f5ff;
     transform: translateY(-2px);
+}
+
+/* Category-specific filter button hover colors */
+.filter-btn[data-filter="work"]:hover {
+    border-color: rgba(147, 51, 234, 0.6);
+    color: #c084fc;
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+.filter-btn[data-filter="personal"]:hover {
+    border-color: rgba(59, 130, 246, 0.6);
+    color: #93c5fd;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.filter-btn[data-filter="hackathon"]:hover {
+    border-color: rgba(251, 191, 36, 0.6);
+    color: #fcd34d;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+.filter-btn[data-filter="publication"]:hover {
+    border-color: rgba(249, 115, 22, 0.6);
+    color: #fb923c;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.filter-btn[data-filter="all"]:hover {
+    border-color: rgba(0, 245, 255, 0.6);
+    color: #00f5ff;
+    box-shadow: 0 4px 12px rgba(0, 245, 255, 0.3);
 }
 
 .filter-btn.active {
@@ -496,10 +525,10 @@ body {
 }
 
 .filter-btn[data-filter="personal"].active {
-    background: linear-gradient(135deg, rgba(0, 245, 255, 0.3), rgba(0, 128, 255, 0.3));
-    border-color: rgba(0, 245, 255, 0.8);
-    color: #00f5ff;
-    box-shadow: 0 4px 15px rgba(0, 245, 255, 0.4);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.3));
+    border-color: rgba(59, 130, 246, 0.8);
+    color: #93c5fd;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 .filter-btn[data-filter="hackathon"].active {
@@ -509,11 +538,11 @@ body {
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
 }
 
-.filter-btn[data-filter="event"].active {
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 200, 100, 0.3));
-    border-color: rgba(0, 255, 136, 0.8);
-    color: #00ff88;
-    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+.filter-btn[data-filter="publication"].active {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.3), rgba(234, 88, 12, 0.3));
+    border-color: rgba(249, 115, 22, 0.8);
+    color: #fb923c;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 }
 
 .all-projects-card {
@@ -538,7 +567,27 @@ body {
 
 .all-projects-card:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(0, 245, 255, 0.3);
+}
+
+/* Category-specific hover colors */
+.all-projects-card[data-category="work"]:hover {
+    border-color: rgba(147, 51, 234, 0.6);
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.2);
+}
+
+.all-projects-card[data-category="personal"]:hover {
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.all-projects-card[data-category="hackathon"]:hover {
+    border-color: rgba(251, 191, 36, 0.6);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
+}
+
+.all-projects-card[data-category="publication"]:hover {
+    border-color: rgba(249, 115, 22, 0.6);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
 }
 
 .project-image-container {
@@ -598,10 +647,10 @@ body {
 }
 
 .project-category-badge.personal {
-    background: rgba(6, 182, 212, 0.15);
-    border: 1.5px solid rgba(6, 182, 212, 0.4);
-    color: #67e8f9;
-    box-shadow: 0 2px 6px rgba(6, 182, 212, 0.2);
+    background: rgba(59, 130, 246, 0.15);
+    border: 1.5px solid rgba(59, 130, 246, 0.4);
+    color: #93c5fd;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
 }
 
 .project-category-badge.hackathon {
@@ -611,11 +660,11 @@ body {
     box-shadow: 0 2px 6px rgba(251, 191, 36, 0.2);
 }
 
-.project-category-badge.event {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1.5px solid rgba(16, 185, 129, 0.4);
-    color: #6ee7b7;
-    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+.project-category-badge.publication {
+    background: rgba(249, 115, 22, 0.15);
+    border: 1.5px solid rgba(249, 115, 22, 0.4);
+    color: #fb923c;
+    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.2);
 }
 
 .project-card-content {
