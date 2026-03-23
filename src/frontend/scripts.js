@@ -148,6 +148,42 @@
     }
   }
 
+  // ---- Project Filtering ----
+  function initProjectFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.all-projects-card');
+
+    if (!filterButtons.length || !projectCards.length) return;
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        this.classList.add('active');
+
+        const filterValue = this.getAttribute('data-filter');
+
+        // Filter projects with smooth animation
+        projectCards.forEach((card, index) => {
+          const category = card.getAttribute('data-category');
+
+          if (filterValue === 'all' || category === filterValue) {
+            // Show with staggered animation
+            setTimeout(() => {
+              card.classList.remove('hidden');
+              card.style.animation = 'fadeInUp 0.4s ease-out forwards';
+            }, index * 30); // 30ms stagger delay
+          } else {
+            // Hide immediately
+            card.classList.add('hidden');
+            card.style.animation = 'none';
+          }
+        });
+      });
+    });
+  }
+
   // ---- Init on DOM ready ----
   document.addEventListener('DOMContentLoaded', function () {
     // Newsletter form (only exists on blog page)
@@ -156,6 +192,9 @@
 
     // Blog posts (only on blog page)
     if (byId('blog-posts')) fetchBlogPosts();
+
+    // Project filters (only on projects page)
+    initProjectFilters();
 
     // Intersection Observer for sections (fade-in)
     const sections = document.querySelectorAll('.section');
