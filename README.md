@@ -1,6 +1,10 @@
-### Hi, I'm Shay 👋
+<p align="center">
+  <a href="https://shaymanor.com">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=2800&pause=900&color=2F81F7&center=true&vCenter=true&width=600&height=60&lines=Hi%2C+I'm+Shay+%F0%9F%91%8B;ML+%2F+Autonomous+Systems+%2F+Quantum;shaymanor.com" alt="Typing SVG" />
+  </a>
+</p>
 
-<a href="https://u8views.com/github/ShayManor"><img src="https://u8views.com/api/v1/github/profiles/34466739/views/day-week-month-total-count.svg" alt="Profile views"></a>
+***
 
 CS + Physics undergrad at Purdue (BS/MS, 3+1), doing ML/robotics research at the IDEAS Lab and leading [EVC Autonomous](https://github.com/EVC-Purdue/AutonomousKart).
 
@@ -26,3 +30,6 @@ Applications of AI in autonomous racing, financial modeling, and robotics.
 #### 📫 How to reach me
 
 <a href="https://shaymanor.com"><img src="https://img.shields.io/badge/Website-0A0A0A?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Website"></a> <a href="https://linkedin.com/in/shaymanor"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a> <a href="mailto:shay.manor@gmail.com"><img src="https://img.shields.io/badge/shay.manor%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
+
+<a href="https://u8views.com/github/ShayManor"><img src="https://u8views.com/api/v1/github/profiles/34466739/views/day-week-month-total-count.svg" alt="Profile views"></a>
+
