@@ -32,11 +32,6 @@ def blog():
     return send_from_directory(frontend.static_folder, "blog.html")
 
 
-@frontend.route("/about", methods=["GET"])
-def about():
-    return send_from_directory(frontend.static_folder, "about.html")
-
-
 @frontend.route("/resume", methods=["GET"])
 def resume():
     return send_from_directory(frontend.static_folder, "resume.html")
