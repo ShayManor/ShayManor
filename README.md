@@ -16,7 +16,7 @@ Previously interned at <img src="https://avatars.githubusercontent.com/u/5083789
 Applications of AI in autonomous racing, financial modeling, and robotics.
 
 #### 🚀 Selected projects
-- **[AutonomousKart](https://github.com/EVC-Purdue/AutonomousKart)**: full ROS2 self-driving stack for our racing kart (3DGS localization, EKF + RTK GPS, online param optimization)
+- **[AutonomousKart](https://github.com/EVC-Purdue/AutonomousKart)**: Won first place: full ROS2 self-driving stack for our racing kart (3DGS localization, EKF + RTK GPS, online param optimization)
 - **[Guardrail Distillation](https://github.com/ShayManor/Guardrail-Distillation)**: multi-stage KD pipeline for semantic segmentation on SegFormer (Cityscapes / ACDC) @ IDEAS Lab
 - **[ResearchViewer](https://researchviewer.org)**: full-stack arXiv explorer with HF-native dataset (Flask + DuckDB + React)
 - **[gpufindr.com](https://gpufindr.com)**: GPU cloud pricing aggregator (500+ users, Go + MCP)
