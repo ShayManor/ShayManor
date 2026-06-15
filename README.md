@@ -6,7 +6,7 @@
 
 ***
 
-CS + Physics undergrad at Purdue (BS/MS, 3+1), doing ML/robotics research at the IDEAS Lab and leading [EVC Autonomous](https://github.com/EVC-Purdue/AutonomousKart).
+CS + Physics BS/MS at Purdue, interning at <img src="https://logos-world.net/wp-content/uploads/2020/09/Google-Logo.png" height="36" valign="middle"> Research, and researching ML/robotics in the IDEAS Lab.
 
 Previously interned at <img src="https://avatars.githubusercontent.com/u/50837895?s=64&v=4" height="18" valign="middle"> [**CoreWeave**](https://www.coreweave.com) (Summer '25) and <img src="https://www.google.com/s2/favicons?domain=sentra.io&sz=64" height="18" valign="middle"> [**Sentra**](https://www.sentra.io) (Summer '23, '24).
 
