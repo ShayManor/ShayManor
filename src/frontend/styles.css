@@ -182,12 +182,9 @@ body {
 
 .hero-badge::before {
     content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #2e9e6b;
-    box-shadow: 0 0 0 3px rgba(46, 158, 107, 0.18);
-    animation: pulse 2.4s infinite;
+    width: 24px;
+    height: 1.5px;
+    background: var(--accent);
 }
 
 .hero-badge i {
@@ -201,7 +198,7 @@ body {
 }
 
 .badge-logo {
-    height: 16px;
+    height: 24px;
     width: auto;
     display: block;
 }
@@ -375,16 +372,16 @@ body {
 }
 
 .xp-logo {
-    flex: 0 0 150px;
+    flex: 0 0 140px;
+    align-self: center;
     display: flex;
     align-items: center;
-    height: 26px;
-    padding-top: 4px;
+    justify-content: center;
 }
 
 .xp-logo img {
-    max-height: 24px;
-    max-width: 150px;
+    max-height: 46px;
+    max-width: 130px;
     width: auto;
     height: auto;
 }
@@ -1590,6 +1587,8 @@ body {
         flex: 0 0 auto;
         height: auto;
         padding-top: 0;
+        align-self: flex-start;
+        justify-content: flex-start;
     }
 
     .xp-date {
