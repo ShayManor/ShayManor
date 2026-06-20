@@ -180,13 +180,6 @@ body {
     margin-bottom: 2rem;
 }
 
-.hero-badge::before {
-    content: '';
-    width: 24px;
-    height: 1.5px;
-    background: var(--accent);
-}
-
 .hero-badge i {
     display: none;
 }
