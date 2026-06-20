@@ -194,6 +194,23 @@ body {
     display: none;
 }
 
+.badge-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-logo {
+    height: 16px;
+    width: auto;
+    display: block;
+}
+
+.badge-research {
+    color: #5f6368;
+    font-weight: 500;
+}
+
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.45; }
@@ -330,6 +347,84 @@ body {
     width: 48px;
     height: 2px;
     background: var(--gold);
+}
+
+/* ---- Experience (home) ---- */
+.xp-list {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.xp {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.75rem;
+    padding: 1.6rem 1.75rem;
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.2s ease;
+}
+
+.xp:last-child {
+    border-bottom: none;
+}
+
+.xp:hover {
+    background: var(--paper);
+}
+
+.xp-logo {
+    flex: 0 0 150px;
+    display: flex;
+    align-items: center;
+    height: 26px;
+    padding-top: 4px;
+}
+
+.xp-logo img {
+    max-height: 24px;
+    max-width: 150px;
+    width: auto;
+    height: auto;
+}
+
+.xp-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.xp-role {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 0.15rem;
+}
+
+.xp-org {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.xp-desc {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-top: 0.5rem;
+    max-width: 64ch;
+}
+
+.xp-date {
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    padding-top: 0.35rem;
 }
 
 /* ---- Featured project cards ---- */
@@ -1484,6 +1579,21 @@ body {
 
     .social-links {
         justify-content: flex-start;
+    }
+
+    .xp {
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .xp-logo {
+        flex: 0 0 auto;
+        height: auto;
+        padding-top: 0;
+    }
+
+    .xp-date {
+        padding-top: 0;
     }
 
     .all-projects-card {
