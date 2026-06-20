@@ -37,7 +37,7 @@
     if (!signup || !toggle) return;
     const show = !(signup.style.display === 'block');
     signup.style.display = show ? 'block' : 'none';
-    toggle.style.background = show ? 'rgba(0, 245, 255, 0.2)' : 'rgba(0, 245, 255, 0.1)';
+    toggle.style.background = show ? 'rgba(38, 72, 107, 0.08)' : '';
   }
   window.toggleNewsletter = toggleNewsletter;
 
@@ -47,7 +47,7 @@
     if (signup && toggle && signup.style.display === 'block') {
       if (!signup.contains(event.target) && !toggle.contains(event.target)) {
         signup.style.display = 'none';
-        toggle.style.background = 'rgba(0, 245, 255, 0.1)';
+        toggle.style.background = '';
       }
     }
   });
@@ -210,8 +210,8 @@
     if (navbar) {
       window.addEventListener('scroll', () => {
         navbar.style.background = (window.scrollY > 50)
-          ? 'rgba(10, 10, 10, 0.98)'
-          : 'rgba(10, 10, 10, 0.95)';
+          ? 'rgba(250, 248, 243, 0.92)'
+          : 'rgba(250, 248, 243, 0.85)';
       });
     }
   });
