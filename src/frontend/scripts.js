@@ -184,8 +184,36 @@
     });
   }
 
+  // ---- Scroll progress bar (side indicator on all pages) ----
+  function initScrollProgress() {
+    const container = document.createElement('div');
+    container.className = 'scroll-progress';
+    const bar = document.createElement('div');
+    bar.className = 'scroll-progress-bar';
+    const hint = document.createElement('div');
+    hint.className = 'scroll-progress-hint';
+    container.appendChild(bar);
+    container.appendChild(hint);
+    document.body.appendChild(container);
+
+    function update() {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const pct = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      bar.style.height = (pct * 100) + '%';
+      // Show the "scroll" hint only at the very top of a scrollable page
+      container.classList.toggle('scrolled', window.scrollY > 2 || max <= 0);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
   // ---- Init on DOM ready ----
   document.addEventListener('DOMContentLoaded', function () {
+    // Scroll progress indicator
+    initScrollProgress();
+
     // Newsletter form (only exists on blog page)
     const newsletterForm = byId('newsletterForm');
     if (newsletterForm) newsletterForm.addEventListener('submit', handleNewsletterSubmit);

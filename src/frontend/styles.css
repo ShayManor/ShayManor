@@ -304,6 +304,54 @@ body {
     transform: translateY(-2px);
 }
 
+/* ---- Scroll progress bar ---- */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100vh;
+    background: var(--rule);
+    z-index: 1100;
+}
+
+.scroll-progress-bar {
+    width: 100%;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.08s linear;
+}
+
+.scroll-progress-hint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 26px;
+    background: var(--accent);
+    animation: scrollHint 1.9s ease-in-out infinite;
+}
+
+.scroll-progress.scrolled .scroll-progress-hint {
+    display: none;
+}
+
+@keyframes scrollHint {
+    0%   { transform: translateY(-8px); opacity: 0; }
+    25%  { opacity: 1; }
+    65%  { opacity: 1; }
+    100% { transform: translateY(120px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scroll-progress-hint {
+        animation: none;
+        transform: none;
+        height: 42px;
+        opacity: 0.55;
+    }
+}
+
 /* ---- Sections ---- */
 .section {
     padding: 90px 0;
