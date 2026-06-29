@@ -190,10 +190,15 @@
     container.className = 'scroll-progress';
     const bar = document.createElement('div');
     bar.className = 'scroll-progress-bar';
-    const hint = document.createElement('div');
-    hint.className = 'scroll-progress-hint';
     container.appendChild(bar);
-    container.appendChild(hint);
+    // The "scroll" hint only belongs on the index page
+    const path = window.location.pathname;
+    const isIndex = path === '/' || path === '' || /\/index(\.html)?$/.test(path);
+    if (isIndex) {
+      const hint = document.createElement('div');
+      hint.className = 'scroll-progress-hint';
+      container.appendChild(hint);
+    }
     document.body.appendChild(container);
 
     function update() {
