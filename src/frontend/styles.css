@@ -4,18 +4,18 @@
   --nav-height: 73px; /* set to your actual navbar height */
 
   /* Palette — cool paper, ink, scholarly blue */
-  --paper: #F4F5F2;
-  --paper-2: #EAEBE6;
+  --paper: #f1f1ed;
+  --paper-2: #e2e3de;
   --card: #FFFFFF;
-  --ink: #191B1D;
-  --ink-soft: #565859;
+  --ink: #181a1c;
+  --ink-soft: #515455;
   --ink-faint: #8A8C8B;
-  --rule: #E1E2DC;
-  --rule-strong: #CFD0C9;
-  --accent: #284B6B;
-  --accent-deep: #163049;
-  --accent-wash: #E9EDF1;
-  --gold: #284B6B;
+  --rule: #e4e5df;
+  --rule-strong: #d0d0cb;
+  --accent: #294d6d;
+  --accent-deep: #152f49;
+  --accent-wash: #e5eaef;
+  --gold: #284a6a;
 
   --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
   --sans: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
