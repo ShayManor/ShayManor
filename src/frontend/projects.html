@@ -74,7 +74,23 @@
         <div class="project-image-small"><i class="fas fa-car"></i></div>
         <span class="project-category-badge personal" title="Personal"><i class="fas fa-user"></i></span>
       </div>
-      <div class="project-card-content"><h3>Autonomous Driving</h3>
+      <div class="project-card-content"><h3>Autonomous Driving (A27)</h3>
+        <p>Purdue Electric Vehicle's 2026-27 autonomous stack. The biggest change from A26 is multi-kart racing, which adds obstacle detection and avoidance. The stack runs as a distributed system across 6 computers, with 3DGS localization and a latent dynamics world model trained on driving logs: a JEPA-style encoder feeds a fine-tuned TD-MPC2 that plans in latent space, so the kart can drive at the grip limit and slide under control. In progress.</p>
+        <div class="project-tech" style="margin-top: 1rem;">
+          <span class="tech-tag">Multi-Agent Racing</span><span class="tech-tag">Obstacle Avoidance</span><span class="tech-tag">Distributed Systems</span><span class="tech-tag">3DGS</span><span class="tech-tag">World Models</span><span class="tech-tag">TD-MPC2</span>
+        </div>
+        <div class="project-links" style="margin-top: 1rem;">
+          <a href="https://github.com/EVC-Purdue/A27" class="project-link" target="_blank"><i class="fab fa-github"></i>GitHub Repo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="all-projects-card" data-category="personal">
+      <div class="project-image-container">
+        <div class="project-image-small"><i class="fas fa-car"></i></div>
+        <span class="project-category-badge personal" title="Personal"><i class="fas fa-user"></i></span>
+      </div>
+      <div class="project-card-content"><h3>Autonomous Driving (A26)</h3>
         <p>1st Place International Autonomous Karting Series Winner as rookie team: Team lead of the Purdue Electric Vehicle's Autonomous team. Responsible for fully designing and implementing pathfinding, controls, and localization solution from scratch.</p>
         <div class="project-tech" style="margin-top: 1rem;">
           <span class="tech-tag">Simulators</span><span class="tech-tag">Controls</span><span class="tech-tag">Leadership</span><span class="tech-tag">Machine Learning</span><span class="tech-tag">Edge Inference</span><span class="tech-tag">Embedded Systems</span>
@@ -109,7 +125,7 @@
         <span class="project-category-badge publication" title="Publication"><i class="fas fa-user"></i></span>
       </div>
       <div class="project-card-content"><h3>MERLIN</h3>
-        <p>A metric 3D reconstruction model ~10x smaller and faster than SOTA, running fully on-device on a $249 Jetson Orin Nano. Distilled a 1.23B teacher to 230M with INT8 TensorRT for live inference at 20 FPS and ~10W, turning a single camera and IMU into a drift-bounded metric 3D map for indoor navigation. Introduces SWaP-C, a benchmark for size, weight, power, and cost in edge 3D perception.</p>
+        <p>Leading a project on lightweight 3D reconstruction for autonomous drone navigation. A metric 3D reconstruction model ~10x smaller and faster than SOTA, running fully on-device on a $249 Jetson Orin Nano. Distilled a 1.23B teacher to 230M with INT8 TensorRT for live inference at 20 FPS and ~10W, turning a single camera and IMU into a drift-bounded metric 3D map for indoor navigation. Introduces SWaP-C, a benchmark for size, weight, power, and cost in edge 3D perception. In progress.</p>
         <div class="project-tech" style="margin-top: 1rem;">
           <span class="tech-tag">3D Reconstruction</span><span class="tech-tag">Model Distillation</span><span class="tech-tag">TensorRT</span><span class="tech-tag">Edge Inference</span><span class="tech-tag">Computer Vision</span>
         </div>
@@ -161,9 +177,9 @@
         <span class="project-category-badge publication" title="Writing"><i class="fas fa-file-alt"></i></span>
       </div>
       <div class="project-card-content"><h3>Horizon-Reduction</h3>
-        <p>Improving SARSA (offline reinforcement learning) with physics-informed learning through horizon reduction techniques. Research at Purdue's IDEAS Lab exploring novel approaches to enhance sample efficiency and learning stability in offline RL environments.</p>
+        <p>Physics-informed long-horizon offline RL at Purdue's IDEAS Lab. Extends SHARSA, which reduces the effective horizon through n-step SARSA value learning and a hierarchical policy, with a geodesic HJB loss: a physics-informed term that pushes the learned value function to satisfy the Hamilton-Jacobi-Bellman equation, giving more accurate value estimates over long horizons. Submitting.</p>
         <div class="project-tech" style="margin-top: 1rem;">
-          <span class="tech-tag">Reinforcement Learning</span><span class="tech-tag">Big Data</span><span class="tech-tag">Physics-Informed Learning</span><span class="tech-tag">Offline RL</span><span class="tech-tag">Horizon Reduction</span>
+          <span class="tech-tag">Reinforcement Learning</span><span class="tech-tag">Big Data</span><span class="tech-tag">Physics-Informed Learning</span><span class="tech-tag">Offline RL</span><span class="tech-tag">Horizon Reduction</span><span class="tech-tag">HJB</span>
         </div>
         <div class="project-links" style="margin-top: 1rem;">
           <a href="https://github.com/ShayManor/horizon-reduction" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a>
