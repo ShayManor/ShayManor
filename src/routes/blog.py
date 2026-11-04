@@ -133,6 +133,8 @@ def create_blog():
             "articles": articles,
         }
         response = supabase.table("site_blog").insert(data_to_insert).execute()
+        from src.routes.frontend import _blog_cache
+        _blog_cache["expires_at"] = 0.0
         return jsonify({"status": id})
     except Exception as e:
         return jsonify({"error": str(e)})

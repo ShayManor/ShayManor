@@ -97,21 +97,7 @@
     setTimeout(() => { message.style.display = 'none'; }, 5000);
   }
 
-  // ---- Blog fetch & render (works with or without Marked) ----
-  const isBlogPage = /^\/blog(\/|$|\.)/.test(window.location.pathname);
-  const blogFetchPromise = isBlogPage
-    ? fetch(`${SUPABASE_URL}/rest/v1/site_blog?select=id,title,tldr,body,created_at&order=created_at.desc&limit=20`, {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      }).then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-    : null;
-
+  // ---- Blog fetch & render (server-prerendered first, client fallback) ----
   function renderPostHtml(post) {
     const tldrText = post.tldr || '';
     const hasPrefix = /^(tl;dr|tldr)[\s:]/i.test(tldrText.trim());
@@ -130,27 +116,48 @@
       </article>`;
   }
 
+  function ensureMarkedLoaded() {
+    if (window.marked && window.marked.parse) return Promise.resolve();
+    return new Promise((resolve) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+      s.onload = () => resolve();
+      s.onerror = () => resolve();
+      document.head.appendChild(s);
+    });
+  }
+
   async function fetchBlogPosts() {
     const loadingEl = byId('blog-loading');
     const errorEl = byId('blog-error');
     const postsEl = byId('blog-posts');
     if (!loadingEl || !postsEl) return;
 
+    // Server-side prerendered: skip client fetch
+    if (postsEl.querySelector('.blog-post')) {
+      loadingEl.style.display = 'none';
+      if (errorEl) errorEl.style.display = 'none';
+      return;
+    }
+
     try {
       loadingEl.style.display = 'block';
       if (errorEl) errorEl.style.display = 'none';
       postsEl.innerHTML = '';
 
-      const posts = await (blogFetchPromise || fetch(`${SUPABASE_URL}/rest/v1/site_blog?select=id,title,tldr,body,created_at&order=created_at.desc&limit=20`, {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      }).then(r => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      }));
+      const [posts] = await Promise.all([
+        fetch(`${SUPABASE_URL}/rest/v1/site_blog?select=id,title,tldr,body,created_at&order=created_at.desc&limit=20`, {
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        }).then(r => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        }),
+        ensureMarkedLoaded()
+      ]);
 
       loadingEl.style.display = 'none';
       if (!posts.length) { postsEl.innerHTML = '<div class="no-posts"><p>No blog posts found.</p></div>'; return; }

@@ -16,9 +16,12 @@ CORS(app)
 COMPRESSIBLE_TYPES = (
     "text/html",
     "text/css",
+    "text/plain",
+    "text/xml",
     "text/javascript",
     "application/javascript",
     "application/json",
+    "application/xml",
     "image/svg+xml",
 )
 
@@ -28,6 +31,8 @@ def optimize_response(response):
     path = request.path or "/"
     if path.startswith("/assets/") or path in ("/styles.css", "/scripts.js", "/favicon.ico"):
         response.headers["Cache-Control"] = "public, max-age=86400"
+    elif path in ("/robots.txt", "/sitemap.xml"):
+        response.headers["Cache-Control"] = "public, max-age=3600"
     elif response.mimetype == "text/html" and response.status_code == 200:
         response.headers["Cache-Control"] = "public, max-age=300"
 
