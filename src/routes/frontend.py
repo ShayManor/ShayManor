@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import re
+import threading
 import time
 
 from flask import Blueprint, Response, send_from_directory
@@ -21,6 +22,28 @@ SUPABASE_ANON_KEY = os.getenv(
     "SUPABASE_ANON_KEY",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0ZWF2ZmVpdW1vZGJqeXd6cWZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5NTY1MDIsImV4cCI6MjA3MDUzMjUwMn0.OoB4llKDEtXq0CGgPavqMYEAsZtRF8St_C-YPU-MNPw",
 )
+
+
+def _minify_css(css_text: str) -> str:
+    css_text = re.sub(r"/\*.*?\*/", "", css_text, flags=re.DOTALL)
+    css_text = re.sub(r"\s+", " ", css_text)
+    css_text = re.sub(r"\s*([{};,])\s*", r"\1", css_text)
+    return css_text.replace(";}", "}").strip()
+
+
+_MINIFIED_CSS = _minify_css((Path(frontend.static_folder) / "styles.css").read_text(encoding="utf-8"))
+_PAGE_CACHE: dict[str, str] = {}
+
+
+def _get_inlined_page_html(filename: str) -> str:
+    if filename not in _PAGE_CACHE:
+        raw_html = (Path(frontend.static_folder) / filename).read_text(encoding="utf-8")
+        _PAGE_CACHE[filename] = raw_html.replace(
+            '<link rel="stylesheet" href="/styles.css" type="text/css">',
+            f"<style>{_MINIFIED_CSS}</style>",
+            1,
+        )
+    return _PAGE_CACHE[filename]
 
 FAVICON_SVG = (
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512'>"
@@ -59,7 +82,7 @@ SITEMAP_XML = """<?xml version="1.0" encoding="UTF-8"?>
 </urlset>
 """
 
-_blog_cache = {"html": None, "expires_at": 0.0}
+_blog_cache = {"html": None, "expires_at": 0.0, "refreshing": False}
 _BLOG_CACHE_TTL = 300.0
 
 
@@ -100,11 +123,7 @@ def _render_post_article(post: dict) -> str:
     )
 
 
-def _get_prerendered_blog_html() -> str | None:
-    now = time.monotonic()
-    if _blog_cache["html"] and now < _blog_cache["expires_at"]:
-        return _blog_cache["html"]
-
+def _refresh_blog_cache_sync() -> str | None:
     try:
         resp = requests.get(
             f"{SUPABASE_URL}/rest/v1/site_blog?select=id,title,tldr,body,created_at&order=created_at.desc&limit=20",
@@ -121,12 +140,11 @@ def _get_prerendered_blog_html() -> str | None:
         if not isinstance(posts, list) or not posts:
             return _blog_cache["html"]
 
-        template_path = Path(frontend.static_folder) / "blog.html"
-        template_html = template_path.read_text(encoding="utf-8")
+        template_html = _get_inlined_page_html("blog.html")
         posts_html = "\n".join(_render_post_article(p) for p in posts)
 
         blog_postings = []
-        for p in posts[:10]:
+        for p in posts:
             item = {
                 "@type": "BlogPosting",
                 "headline": str(p.get("title") or "Untitled"),
@@ -167,10 +185,26 @@ def _get_prerendered_blog_html() -> str | None:
             flags=re.DOTALL,
         )
         _blog_cache["html"] = rendered
-        _blog_cache["expires_at"] = now + _BLOG_CACHE_TTL
+        _blog_cache["expires_at"] = time.monotonic() + _BLOG_CACHE_TTL
         return rendered
     except Exception:
         return _blog_cache["html"]
+    finally:
+        _blog_cache["refreshing"] = False
+
+
+def _get_prerendered_blog_html() -> str | None:
+    now = time.monotonic()
+    if _blog_cache["html"]:
+        if now >= _blog_cache["expires_at"] and not _blog_cache["refreshing"]:
+            _blog_cache["refreshing"] = True
+            threading.Thread(target=_refresh_blog_cache_sync, daemon=True).start()
+        return _blog_cache["html"]
+    return _refresh_blog_cache_sync()
+
+
+# Pre-warm the blog cache on worker startup so cold requests never wait on Supabase
+threading.Thread(target=_refresh_blog_cache_sync, daemon=True).start()
 
 
 @frontend.get("/favicon.ico")
@@ -195,17 +229,17 @@ def scripts():
 
 @frontend.get("/styles.css")
 def styles():
-    return frontend.send_static_file("styles.css")
+    return Response(_MINIFIED_CSS, mimetype="text/css")
 
 
 @frontend.route("/", methods=["GET"])
 def root():
-    return send_from_directory(frontend.static_folder, "index.html")
+    return Response(_get_inlined_page_html("index.html"), mimetype="text/html")
 
 
 @frontend.route("/projects", methods=["GET"])
 def projects():
-    return send_from_directory(frontend.static_folder, "projects.html")
+    return Response(_get_inlined_page_html("projects.html"), mimetype="text/html")
 
 
 @frontend.route("/blog", methods=["GET"])
@@ -213,9 +247,9 @@ def blog():
     prerendered = _get_prerendered_blog_html()
     if prerendered:
         return Response(prerendered, mimetype="text/html")
-    return send_from_directory(frontend.static_folder, "blog.html")
+    return Response(_get_inlined_page_html("blog.html"), mimetype="text/html")
 
 
 @frontend.route("/resume", methods=["GET"])
 def resume():
-    return send_from_directory(frontend.static_folder, "resume.html")
+    return Response(_get_inlined_page_html("resume.html"), mimetype="text/html")
