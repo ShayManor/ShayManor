@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Libre+Franklin:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
-
 :root {
   --nav-height: 73px; /* set to your actual navbar height */
 
@@ -39,8 +37,6 @@ body.has-fixed-nav {
 
 html {
   background: var(--paper);
-  background-attachment: fixed;
-  background-size: cover;
 }
 
 body {
@@ -71,9 +67,15 @@ body {
     padding: 1rem 2rem;
     background: rgba(250, 248, 243, 0.85);
     backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     border-bottom: 1px solid var(--rule);
     z-index: 1000;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transform: translateZ(0);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(250, 248, 243, 0.92);
 }
 
 .nav-container {
@@ -313,13 +315,16 @@ body {
     height: 100vh;
     background: var(--rule);
     z-index: 1100;
+    pointer-events: none;
 }
 
 .scroll-progress-bar {
     width: 100%;
-    height: 0;
+    height: 100%;
     background: var(--accent);
-    transition: height 0.08s linear;
+    transform-origin: top;
+    transform: scaleY(0);
+    will-change: transform;
 }
 
 .scroll-progress-hint {
@@ -357,7 +362,7 @@ body {
     padding: 90px 0;
     opacity: 0;
     transform: translateY(40px);
-    transition: all 0.7s ease;
+    transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
 .section.visible {
@@ -734,12 +739,14 @@ body {
     padding: 0;
     border: 1px solid var(--rule);
     margin-bottom: 1rem;
-    transition: all 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     display: flex;
     overflow: hidden;
     opacity: 1;
     transform: scale(1);
     position: relative;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 240px;
 }
 
 .all-projects-card.hidden {
@@ -1163,7 +1170,9 @@ body {
     padding: 2.25rem;
     margin-bottom: 1.5rem;
     border: 1px solid var(--rule);
-    transition: all 0.25s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
 }
 
 .blog-post:hover {

@@ -98,6 +98,38 @@
   }
 
   // ---- Blog fetch & render (works with or without Marked) ----
+  const isBlogPage = /^\/blog(\/|$|\.)/.test(window.location.pathname);
+  const blogFetchPromise = isBlogPage
+    ? fetch(`${SUPABASE_URL}/rest/v1/site_blog?select=id,title,tldr,body,created_at&order=created_at.desc&limit=20`, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }).then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+    : null;
+
+  function renderPostHtml(post) {
+    const tldrText = post.tldr || '';
+    const hasPrefix = /^(tl;dr|tldr)[\s:]/i.test(tldrText.trim());
+    const tldrClass = hasPrefix ? 'blog-post-tldr has-tldr' : 'blog-post-tldr';
+    const rendered = (window.marked && window.marked.parse)
+      ? window.marked.parse(post.body || '')
+      : `<pre>${escapeHtml(post.body || '')}</pre>`;
+    return `
+      <article class="blog-post">
+        <div class="blog-post-header">
+          <h2 class="blog-post-title">${escapeHtml(post.title || 'Untitled')}</h2>
+          <div class="blog-post-date">${formatDate(post.created_at)}</div>
+        </div>
+        ${post.tldr ? `<div class="${tldrClass}">${escapeHtml(post.tldr)}</div>` : ''}
+        <div class="blog-post-content">${rendered}</div>
+      </article>`;
+  }
+
   async function fetchBlogPosts() {
     const loadingEl = byId('blog-loading');
     const errorEl = byId('blog-error');
@@ -109,37 +141,30 @@
       if (errorEl) errorEl.style.display = 'none';
       postsEl.innerHTML = '';
 
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/site_blog?order=created_at.desc&limit=20`, {
+      const posts = await (blogFetchPromise || fetch(`${SUPABASE_URL}/rest/v1/site_blog?select=id,title,tldr,body,created_at&order=created_at.desc&limit=20`, {
         headers: {
           'apikey': SUPABASE_ANON_KEY,
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
           'Content-Type': 'application/json'
         }
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const posts = await res.json();
+      }).then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      }));
 
       loadingEl.style.display = 'none';
       if (!posts.length) { postsEl.innerHTML = '<div class="no-posts"><p>No blog posts found.</p></div>'; return; }
 
-      const html = posts.map(post => {
-        const tldrText = post.tldr || '';
-        const hasPrefix = /^(tl;dr|tldr)[\s:]/i.test(tldrText.trim());
-        const tldrClass = hasPrefix ? 'blog-post-tldr has-tldr' : 'blog-post-tldr';
-        const rendered = (window.marked && window.marked.parse)
-          ? window.marked.parse(post.body || '')
-          : `<pre>${escapeHtml(post.body || '')}</pre>`;
-        return `
-          <article class="blog-post">
-            <div class="blog-post-header">
-              <h2 class="blog-post-title">${escapeHtml(post.title || 'Untitled')}</h2>
-              <div class="blog-post-date">${formatDate(post.created_at)}</div>
-            </div>
-            ${post.tldr ? `<div class="${tldrClass}">${escapeHtml(post.tldr)}</div>` : ''}
-            <div class="blog-post-content">${rendered}</div>
-          </article>`;
-      }).join('');
-      postsEl.innerHTML = html;
+      // Render above-the-fold posts immediately for fast LCP, then defer the rest
+      const initialBatch = posts.slice(0, 3);
+      const remainingBatch = posts.slice(3);
+      postsEl.innerHTML = initialBatch.map(renderPostHtml).join('');
+
+      if (remainingBatch.length) {
+        requestAnimationFrame(() => {
+          postsEl.insertAdjacentHTML('beforeend', remainingBatch.map(renderPostHtml).join(''));
+        });
+      }
 
     } catch (e) {
       console.error('Error fetching blog posts:', e);
@@ -157,27 +182,17 @@
 
     filterButtons.forEach(button => {
       button.addEventListener('click', function() {
-        // Remove active class from all buttons
         filterButtons.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
         this.classList.add('active');
 
         const filterValue = this.getAttribute('data-filter');
 
-        // Filter projects with smooth animation
-        projectCards.forEach((card, index) => {
+        projectCards.forEach((card) => {
           const category = card.getAttribute('data-category');
-
           if (filterValue === 'all' || category === filterValue) {
-            // Show with staggered animation
-            setTimeout(() => {
-              card.classList.remove('hidden');
-              card.style.animation = 'fadeInUp 0.4s ease-out forwards';
-            }, index * 30); // 30ms stagger delay
+            card.classList.remove('hidden');
           } else {
-            // Hide immediately
             card.classList.add('hidden');
-            card.style.animation = 'none';
           }
         });
       });
@@ -201,17 +216,41 @@
     }
     document.body.appendChild(container);
 
-    function update() {
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - doc.clientHeight;
-      const pct = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-      bar.style.height = (pct * 100) + '%';
-      // Show the "scroll" hint only at the very top of a scrollable page
-      container.classList.toggle('scrolled', window.scrollY > 2 || max <= 0);
+    const doc = document.documentElement;
+    let maxScroll = Math.max(0, doc.scrollHeight - doc.clientHeight);
+    let wasScrolled = null;
+    let ticking = false;
+
+    function updatePaint() {
+      ticking = false;
+      const y = window.scrollY;
+      const pct = maxScroll > 0 ? Math.min(Math.max(y / maxScroll, 0), 1) : 0;
+      bar.style.transform = `scaleY(${pct})`;
+      const isScrolled = y > 2 || maxScroll <= 0;
+      if (isScrolled !== wasScrolled) {
+        wasScrolled = isScrolled;
+        container.classList.toggle('scrolled', isScrolled);
+      }
     }
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updatePaint);
+      }
+    }
+
+    function recalcBounds() {
+      maxScroll = Math.max(0, doc.scrollHeight - doc.clientHeight);
+      onScroll();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', recalcBounds, { passive: true });
+    if (window.ResizeObserver) {
+      new ResizeObserver(recalcBounds).observe(document.body);
+    }
+    updatePaint();
   }
 
   // ---- Init on DOM ready ----
@@ -233,19 +272,28 @@
     const sections = document.querySelectorAll('.section');
     if (sections.length) {
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
       }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
       sections.forEach(s => observer.observe(s));
     }
 
-    // Navbar scroll effect
+    // Navbar scroll effect (passive + state-toggled)
     const navbar = document.querySelector('.navbar');
     if (navbar) {
+      let navScrolled = window.scrollY > 50;
+      navbar.classList.toggle('scrolled', navScrolled);
       window.addEventListener('scroll', () => {
-        navbar.style.background = (window.scrollY > 50)
-          ? 'rgba(250, 248, 243, 0.92)'
-          : 'rgba(250, 248, 243, 0.85)';
-      });
+        const shouldScroll = window.scrollY > 50;
+        if (shouldScroll !== navScrolled) {
+          navScrolled = shouldScroll;
+          navbar.classList.toggle('scrolled', navScrolled);
+        }
+      }, { passive: true });
     }
   });
 })();
